@@ -2601,6 +2601,8 @@ public:
 
 	bool hasPermittedConditionInPZ() const;
 
+	std::shared_ptr<Container> getStoreInbox() const;
+
 private:
 	friend class PlayerLock;
 	std::mutex mutex;
