@@ -3,11 +3,12 @@ local config = {
 	[1] = {
 		removeItems = {
 			{ position = Position(33096, 32882, 6), itemId = 4977 },
+			{ position = Position(33096, 32882, 6), itemId = 4920 },
 			{ position = Position(33096, 32883, 6), itemId = 4977 },
 			{ position = Position(33096, 32883, 6), itemId = 4920 },
 			{ position = Position(33096, 32884, 6), itemId = 4920 },
 			{ position = Position(33096, 32885, 6), itemId = 4920 },
-			{ position = Position(33097, 32883, 6), itemId = 4976 },
+			{ position = Position(33096, 32883, 6), itemId = 4976 },
 		},
 		fromPosition = Position(33099, 32875, 7),
 		toPosition = Position(33106, 32893, 7),
@@ -16,11 +17,6 @@ local config = {
 	},
 	-- Carlin
 	[2] = {
-		removeItems = {
-			{ position = Position(32393, 31814, 6), itemId = 9491 },
-			{ position = Position(32393, 31815, 6), itemId = 9491 },
-			{ position = Position(32393, 31816, 6), itemId = 9491 },
-		},
 		fromPosition = Position(32397, 31806, 7),
 		toPosition = Position(32403, 31824, 7),
 		mapName = "Carlin",
@@ -28,16 +24,6 @@ local config = {
 	},
 	-- Liberty Bay
 	[3] = {
-		removeItems = {
-			{ position = Position(32309, 32896, 6), itemId = 2279 },
-			{ position = Position(32309, 32895, 6), itemId = 2279 },
-			{ position = Position(32309, 32894, 6), itemId = 2279 },
-			{ position = Position(32309, 32893, 6), itemId = 2279 },
-			{ position = Position(32309, 32896, 6), itemId = 2257 },
-			{ position = Position(32309, 32895, 6), itemId = 2257 },
-			{ position = Position(32309, 32894, 6), itemId = 2257 },
-			{ position = Position(32309, 32893, 6), itemId = 2257 },
-		},
 		fromPosition = Position(32311, 32884, 1),
 		toPosition = Position(32318, 32904, 7),
 		mapName = "Liberty Bay",
@@ -50,7 +36,7 @@ local function yasirwebhook(message) -- New local function that runs on delay to
 end
 
 local yasirEnabled = true
-local yasirChance = 33
+local yasirChance = 100
 
 local function spawnYasir(position)
 	local npc = Game.createNpc("yasir", position)
@@ -67,25 +53,10 @@ function yasir.onStartup()
 			local randTown = config[math.random(#config)]
 			logger.info("[WorldChanges] Yasir: {}", randTown.mapName)
 			local message = string.format("Yasir is in %s today.", randTown.mapName) -- Declaring the message to send to webhook.
-			iterateArea(function(position)
-				local tile = Tile(position)
-				if tile then
-					local items = tile:getItems()
-					if items then
-						for i = 1, #items do
-							items[i]:remove()
-						end
-					end
-
-					local ground = tile:getGround()
-					if ground then
-						ground:remove()
-					end
-				end
-			end, randTown.fromPosition, randTown.toPosition)
 
 			if randTown.removeItems then
 				local item
+				print("remove")
 				for i = 1, #randTown.removeItems do
 					local tile = Tile(randTown.removeItems[i].position)
 					if tile then
